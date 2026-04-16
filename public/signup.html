@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Airbnb Clone</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-container { max-width: 500px; margin: 100px auto; padding: 30px; border: 1px solid #ddd; border-radius: 12px; }
+        .auth-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .auth-btn { width: 100%; background: var(--primary-color); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1 class="auth-title">Welcome to Airbnb</h1>
+        <form id="signupForm">
+            <div class="form-group"><input type="text" id="name" placeholder="Full Name" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
+            <div class="form-group"><input type="password" id="password" placeholder="Password" required></div>
+            <button type="submit" class="auth-btn">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const res = await fetch('/api/v1/users/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            const data = await res.json();
+            if(data.status === 'success') {
+                alert('Account created! Logging you in...');
+                window.location.href = 'index.html';
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
+</body>
+</html>

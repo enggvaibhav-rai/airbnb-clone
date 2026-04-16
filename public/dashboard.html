@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Airbnb Clone</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dashboard-container { padding: 40px 80px; }
+        .booking-list { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 30px; }
+        .booking-item { display: flex; gap: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+        .booking-img { width: 150px; height: 100px; object-fit: cover; border-radius: 8px; }
+        .booking-info h3 { margin-bottom: 8px; }
+        .booking-info p { color: var(--text-grey); font-size: 14px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb Logo"></a></div>
+        <div class="nav-links"><a href="index.html">Home</a><div class="user-menu"><i class="fas fa-user-circle"></i></div></div>
+    </header>
+
+    <div class="dashboard-container">
+        <h1>Your Bookings</h1>
+        <div id="bookingsList" class="booking-list">
+            <div class="loader">Loading your trips...</div>
+        </div>
+    </div>
+
+    <script>
+        const fetchBookings = async () => {
+            const res = await fetch('/api/v1/bookings/my-bookings');
+            const data = await res.json();
+            if(data.status === 'success') renderBookings(data.data.bookings);
+            else {
+                document.getElementById('bookingsList').innerHTML = '<p>Please log in to see your bookings.</p>';
+            }
+        };
+
+        const renderBookings = (bookings) => {
+            if(bookings.length === 0) {
+                document.getElementById('bookingsList').innerHTML = '<p>No bookings yet. Start exploring!</p>';
+                return;
+            }
+            document.getElementById('bookingsList').innerHTML = bookings.map(b => `
+                <div class="booking-item">
+                    <img src="${b.listing.images[0]}" class="booking-img">
+                    <div class="booking-info">
+                        <h3>${b.listing.title}</h3>
+                        <p>${b.listing.location}</p>
+                        <p>Dates: ${new Date(b.startDate).toLocaleDateString()} - ${new Date(b.endDate).toLocaleDateString()}</p>
+                        <p style="margin-top: 8px; font-weight: 600;">Total Paid: $${b.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        };
+        fetchBookings();
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | Airbnb Clone</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .property-header { padding: 40px 80px; }
+        .property-title { font-size: 26px; font-weight: 600; margin-bottom: 8px; }
+        .property-meta { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; text-decoration: underline; }
+        
+        .image-gallery { 
+            padding: 0 80px; 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            grid-template-rows: repeat(2, 200px); 
+            gap: 10px; 
+            margin-bottom: 40px;
+        }
+        .main-img { grid-row: span 2; border-radius: 12px 0 0 12px; overflow: hidden; }
+        .side-img { border-radius: 0; overflow: hidden; }
+        .side-img:nth-child(2) { border-radius: 0 12px 0 0; }
+        .side-img:nth-child(3) { border-radius: 0 0 12px 0; }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .property-content { padding: 0 80px; display: grid; grid-template-columns: 2fr 1fr; gap: 80px; }
+        .host-info { padding-bottom: 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; }
+        .amenities-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+        
+        .booking-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+        .booking-price { font-size: 22px; font-weight: 600; margin-bottom: 24px; }
+        .booking-inputs { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .date-input { display: flex; border-bottom: 1px solid var(--border-color); }
+        .date-input > div { flex: 1; padding: 10px; font-size: 10px; font-weight: 700; border-right: 1px solid var(--border-color); }
+        .date-input > div:last-child { border-right: none; }
+        .guest-input { padding: 10px; font-size: 10px; font-weight: 700; }
+        .book-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb Logo"></a></div>
+        <div class="search-bar">Search...</div>
+        <div class="nav-links">
+            <div class="user-menu" id="userMenuBtn"><i class="fas fa-bars"></i><i class="fas fa-user-circle" style="font-size: 30px; color: #717171;"></i></div>
+        </div>
+    </header>
+
+    <div id="propertyDetails">
+        <div class="loader">Loading property details...</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        const fetchDetails = async () => {
+            const res = await fetch(`/api/v1/listings/${propId}`);
+            const data = await res.json();
+            if(data.status === 'success') renderDetails(data.data.listing);
+        };
+
+        const renderDetails = (listing) => {
+            document.getElementById('propertyDetails').innerHTML = `
+                <div class="property-header">
+                    <h1 class="property-title">${listing.title}</h1>
+                    <div class="property-meta">
+                        <span><i class="fas fa-star"></i> ${listing.ratingsAverage} · ${listing.ratingsQuantity} reviews · ${listing.location}</span>
+                    </div>
+                </div>
+                <div class="image-gallery">
+                    <div class="main-img"><img src="${listing.images[0]}" class="gallery-img"></div>
+                    <div class="side-img"><img src="${listing.images[0]}" class="gallery-img"></div>
+                    <div class="side-img"><img src="${listing.images[0]}" class="gallery-img"></div>
+                </div>
+                <div class="property-content">
+                    <div class="details-left">
+                        <div class="host-info">
+                            <h2>Entire ${listing.category} hosted by ${listing.host.name}</h2>
+                            <p>${listing.guests} guests · ${listing.bedrooms} bedrooms · ${listing.bathrooms} bathrooms</p>
+                        </div>
+                        <div class="description">
+                            <h3>About this space</h3>
+                            <p style="margin-top: 16px; line-height: 1.6;">${listing.description}</p>
+                        </div>
+                        <div class="amenities">
+                            <h3 style="margin-top: 40px;">What this place offers</h3>
+                            <div class="amenities-list">
+                                ${listing.amenities.map(a => `<div class="amenity"><i class="fas fa-check"></i> ${a}</div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details-right">
+                        <div class="booking-card">
+                            <div class="booking-price">$${listing.price} <span>night</span></div>
+                            <div class="booking-inputs">
+                                <div class="date-input">
+                                    <div>CHECK-IN<br><span style="font-weight: 400; font-size: 14px;">Add date</span></div>
+                                    <div>CHECKOUT<br><span style="font-weight: 400; font-size: 14px;">Add date</span></div>
+                                </div>
+                                <div class="guest-input">GUESTS<br><span style="font-weight: 400; font-size: 14px;">1 guest</span></div>
+                            </div>
+                            <button class="book-btn">Reserve</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        fetchDetails();
+    </script>
+</body>
+</html>

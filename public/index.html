@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb Clone | Vacation Rentals, Cabins, Beach Houses & More</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb Logo">
+            </a>
+        </div>
+        <div class="search-bar" id="searchBar">
+            <input type="text" placeholder="Start your search" readonly>
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="host-link">Airbnb your home</a>
+            <a href="#"><i class="fas fa-globe"></i></a>
+            <div class="user-menu" id="userMenuBtn">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-user-circle" style="font-size: 30px; color: #717171;"></i>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="signup.html" class="signup-btn">Sign up</a>
+                <a href="login.html" class="login-btn">Log in</a>
+                <hr>
+                <a href="#">Airbnb your home</a>
+                <a href="#">Help Center</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="categories">
+        <div class="category active" data-category="All">
+            <i class="fas fa-home"></i>
+            <span>All Homes</span>
+        </div>
+        <div class="category" data-category="Apartment">
+            <i class="fas fa-building"></i>
+            <span>Apartments</span>
+        </div>
+        <div class="category" data-category="House">
+            <i class="fas fa-house-user"></i>
+            <span>Houses</span>
+        </div>
+        <div class="category" data-category="Villa">
+            <i class="fas fa-palace"></i>
+            <span>Villas</span>
+        </div>
+        <div class="category" data-category="Cabin">
+            <i class="fas fa-tree"></i>
+            <span>Cabins</span>
+        </div>
+        <div class="category" data-category="Studio">
+            <i class="fas fa-door-open"></i>
+            <span>Studios</span>
+        </div>
+    </div>
+
+    <main>
+        <div class="listings-container" id="listingsContainer">
+            <!-- Listings will be loaded here via JS -->
+            <div class="loader">Loading amazing places...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <span>© 2024 Airbnb Clone, Inc.</span>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Sitemap</a>
+        </div>
+        <div class="footer-right">
+            <span><i class="fas fa-globe"></i> English (US)</span>
+            <span>$ USD</span>
+            <div class="social-icons">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
